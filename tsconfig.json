@@ -1,0 +1,17 @@
+{
+  "include": [
+    "./lib"
+  ],
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./lib",
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "importHelpers": true,
+    "module": "CommonJS",
+    "target": "ES2019"
+  },
+  "exclude": [
+    "**/__tests__"
+  ]
+}
