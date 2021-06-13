@@ -8,6 +8,7 @@ import defaults from 'object.defaults'
 import getPort from 'get-port'
 import express from 'express'
 import { createServer } from 'http'
+import ensureDir from '@appgeist/ensure-dir'
 
 interface Result {
   outputs: Record<string, string>
@@ -50,7 +51,8 @@ interface Options {
 const testGhAction = async (file: string, partialOptions: Partial<Options> = {}): Promise<Result> => {
   const options: Options = defaults(partialOptions, { inputs: [], event: { number: 1 }, repo: { pullRequests: {} } })
   const { event, inputs, repo } = options
-  const eventFile = join(__dirname, '../test-tmp/event.json')
+  const tempDir = join(__dirname, '../test-tmp')
+  const eventFile = join(tempDir, 'event.json')
   const port = await getPort()
 
   const server = express()
@@ -83,7 +85,7 @@ const testGhAction = async (file: string, partialOptions: Partial<Options> = {})
   })
 
   await Promise.all([
-    writeFile(eventFile, {
+    ensureDir(tempDir).then(async () => await writeFile(eventFile, {
       pull_request: 'number' in event
         ? {
             commits: repo.pullRequests[event.number].commits.length,
@@ -98,7 +100,7 @@ const testGhAction = async (file: string, partialOptions: Partial<Options> = {})
           login: 'ChocolateLoverRaj'
         }
       }
-    }, { spaces: 2 }),
+    }, { spaces: 2 })),
     once(fakeGhServer, 'listening')
   ])
 

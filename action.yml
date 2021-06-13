@@ -1,9 +1,12 @@
-name: GitHub Action
-description: Outputs a capitalized string of whatever the input string is.
-outputs:
-  increment:
-    description: Either 'major', 'minor', 'patch', or 'none'.
-    value: ${{ steps.main.outputs.increment }}
+name: Label Manager
+description: Manages a set of labels for an issue or pull request.
+inputs:
+  manage:
+    description: A json array of label names to remove. Example: `["a", "b", "c"]`.
+    required: true
+  set:
+    description: A json array of label names to add. Example: `["a"]`. All labels included in this input should also be apart of the `manage` input.
+    required: true
 runs:
   using: composite
   steps:
@@ -17,3 +20,7 @@ runs:
       run: pnpm start
       shell: bash
       working-directory: ${{ github.action_path }}
+      env:
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
+        INPUT_MANAGE: ${{ inputs.manage }}
+        INPUT_SET: ${{ inputs.set }}
