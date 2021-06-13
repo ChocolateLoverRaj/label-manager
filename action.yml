@@ -2,10 +2,10 @@ name: Label Manager
 description: Manages a set of labels for an issue or pull request.
 inputs:
   manage:
-    description: A json array of label names to remove. Example: `["a", "b", "c"]`.
+    description: 'A json array of label names to remove. Example: `["a", "b", "c"]`'.
     required: true
   set:
-    description: A json array of label names to add. Example: `["a"]`. All labels included in this input should also be apart of the `manage` input.
+    description: 'A json array of label names to add. Example: `["a"]`. All labels included in this input should also be apart of the `manage` input.'
     required: true
 runs:
   using: composite
